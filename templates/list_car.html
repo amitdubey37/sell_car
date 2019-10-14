@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row">
+    {% if not cars|length %}
+    <h2>No cars found at the moment!</h2>
+    {% endif %}
+    {% for car in cars  %}
+    <div class="col-md-4">
+      <div class="card" style="width: 18rem;">
+        <img src="{{car.image_url}}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <p class="card-text">
+            {{car.id}} - {{car.name}} <br/>
+            {{car.price}}
+          </p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+{% endblock %}
