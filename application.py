@@ -6,18 +6,18 @@ from forms import AddCarForm, DeleteCarForm
 from werkzeug.utils import secure_filename
 # from models import Car
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 image_dir = basedir + "/static/images"
 
-app.config['SECRET_KEY'] = 'mysupersecretkey'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://admin:puri_sabji37@database-1.cpeisv2u7g6m.us-east-2.rds.amazonaws.com/cars'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+application.config['SECRET_KEY'] = 'mysupersecretkey'
+application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://admin:puri_sabji37@database-1.cpeisv2u7g6m.us-east-2.rds.amazonaws.com/cars'
+application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
-Migrate(app, db)
+db = SQLAlchemy(application)
+Migrate(application, db)
 
 
 class Car(db.Model):
@@ -34,12 +34,12 @@ class Car(db.Model):
 
 
 
-@app.route('/')
+@application.route('/')
 def index():
     return render_template('index.html')
 
 
-@app.route('/add_car', methods=['GET', 'POST'])
+@application.route('/add_car', methods=['GET', 'POST'])
 def add_car():
     form = AddCarForm()
     if form.validate_on_submit():
@@ -56,12 +56,12 @@ def add_car():
         redirect(url_for('list_car'))
     return render_template('add_car.html', form=form)
 
-@app.route('/list_car')
+@application.route('/list_car')
 def list_car():
     cars = Car.query.all()
     return render_template('list_car.html', cars=cars)
 
-@app.route('/delete', methods=["GET", "POST"])
+@application.route('/delete', methods=["GET", "POST"])
 def delete():
     form = DeleteCarForm()
     if form.validate_on_submit():
@@ -73,4 +73,4 @@ def delete():
     return render_template('delete.html', form=form)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    application.run(host='0.0.0.0')
